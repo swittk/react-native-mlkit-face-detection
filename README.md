@@ -1,6 +1,7 @@
 # react-native-mlkit-face-detection
 
 Face Detection using MLKit
+(Currently iOS Only)
 
 ## Installation
 
@@ -10,12 +11,16 @@ npm install react-native-mlkit-face-detection
 
 ## Usage
 
-```js
-import { multiply } from "react-native-mlkit-face-detection";
+See example app. And Typescript types.
+```ts
+import { MLKitFaceDetector } from "react-native-mlkit-face-detection";
 
 // ...
-
-const result = await multiply(3, 7);
+const detector = MLKitFaceDetector({
+    landmarkMode: 'all'
+});
+// `frame` is a frame of video from `react-native-native-video`
+detector.process(frame)
 ```
 
 ## Contributing
