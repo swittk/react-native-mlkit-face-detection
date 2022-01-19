@@ -1,4 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
+export * from './types';
+import type { SKRNMLKitFaceDetectionOptions, SKRNMLKitFaceDetector } from './types';
 
 const LINKING_ERROR =
   `The package 'react-native-mlkit-face-detection' doesn't seem to be linked. Make sure: \n\n` +
@@ -6,17 +8,22 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow\n';
 
-const MlkitFaceDetection = NativeModules.MlkitFaceDetection
-  ? NativeModules.MlkitFaceDetection
+const SKRNMLKitFaceDetection = NativeModules.SKRNMlkitFaceDetection
+  ? NativeModules.SKRNMlkitFaceDetection
   : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
+    {},
+    {
+      get() {
+        throw new Error(LINKING_ERROR);
+      },
+    }
+  );
 
 export function multiply(a: number, b: number): Promise<number> {
-  return MlkitFaceDetection.multiply(a, b);
+  return SKRNMLKitFaceDetection.multiply(a, b);
+}
+
+
+export function MLKitFaceDetector(options?: Partial<SKRNMLKitFaceDetectionOptions>): SKRNMLKitFaceDetector {
+  return (global as any).SKRNMLKitFaceDetectionNewFaceDetector(options || {});
 }
