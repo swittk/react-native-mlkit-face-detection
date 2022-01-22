@@ -23,6 +23,27 @@ const detector = MLKitFaceDetector({
 detector.process(frame)
 ```
 
+For Vision Camera to work, you must add the babel plugin
+````ts
+module.exports = {
+  plugins: [
+    [
+      'react-native-reanimated/plugin',
+      {
+        globals: ['__SKRNMLKitFaceDetectionVisionCameraFrameProcessorPlugin'],
+      },
+    ],
+````
+and call initialize to one of the frame processor slots (calling `initializeVisionCameraDetector(options)` is equivalent to calling `initializeVisionCameraDetectorAtIndex(0, options)`)
+
+Example:
+```ts
+initializeVisionCameraDetector({
+  landmarkMode: 'all',
+  performanceMode: 'accurate'
+})
+```
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
