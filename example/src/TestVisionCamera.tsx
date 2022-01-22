@@ -14,9 +14,13 @@ import {
 import { Camera, frameRateIncluded } from 'react-native-vision-camera';
 import Reanimated, { Extrapolate, interpolate, useAnimatedGestureHandler, useAnimatedProps, useSharedValue } from 'react-native-reanimated';
 import { useEffect } from 'react';
-import { initializeVisionCameraFrameProcessor, scanSKRNMLKitPose } from 'react-native-mlkit-face-detection';
+import { initializeVisionCameraDetector, scanSKRNMLKitFace } from 'react-native-mlkit-face-detection';
 const MAX_ZOOM_FACTOR = 2;
 
+initializeVisionCameraDetector({
+  landmarkMode: 'all',
+  performanceMode: 'accurate'
+})
 
 const useIsForeground = (): boolean => {
   const [isForeground, setIsForeground] = useState(true);
@@ -178,8 +182,8 @@ export function TestVisionCamera(props: {
 
   const frameProcessor = useFrameProcessor((frame) => {
     'worklet';
-    const pose = scanSKRNMLKitPose(frame);
-    console.log(`Return Pose: ${JSON.stringify(pose)}`);
+    const face = scanSKRNMLKitFace(frame);
+    console.log(`Return Face: ${JSON.stringify(face)}`);
   }, []);
 
   const onFrameProcessorSuggestionAvailable = useCallback((suggestion: FrameProcessorPerformanceSuggestion) => {
@@ -208,7 +212,7 @@ export function TestVisionCamera(props: {
             audio={hasMicrophonePermission}
             frameProcessor={device.supportsParallelVideoProcessing ? frameProcessor : undefined}
             orientation="portrait"
-            frameProcessorFps={1}
+            frameProcessorFps={30}
             onFrameProcessorPerformanceSuggestionAvailable={onFrameProcessorSuggestionAvailable}
           />
         </Reanimated.View>

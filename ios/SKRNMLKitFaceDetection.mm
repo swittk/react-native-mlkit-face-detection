@@ -5,6 +5,7 @@
 #import <jsi/jsi.h>
 #import <ReactCommon/CallInvoker.h>
 #import "SKRNMLKitiOSFaceDetector.h"
+#import "SKRNMLKitFaceDetectionVisionCameraFrameProcessor.h"
 
 using namespace SKRNMLKitFaceDetection;
 @implementation SKRNMlkitFaceDetection
@@ -21,6 +22,38 @@ RCT_EXPORT_METHOD(multiply:(nonnull NSNumber*)a withB:(nonnull NSNumber*)b
     NSNumber *result = @(SKRNMLKitFaceDetection::multiply([a floatValue], [b floatValue]));
     resolve(result);
 }
+#pragma mark - Vision Camera methods
+#if HAS_VISION_CAMERA
+
+RCT_EXPORT_METHOD(initializeDetector:(NSDictionary *)dict
+                  withResolver:(RCTPromiseResolveBlock)resolve
+                  withReject:(RCTPromiseRejectBlock)reject)
+{
+    [[SKRNMLKitFaceDetectionVisionCameraFrameProcessor sharedInstance] initializeDetectorWithOptions:dict];
+}
+RCT_REMAP_METHOD(initializeDetectorAtIndex,
+                 initializeDetectorAtIndex:(int)index
+                 withOptions:(NSDictionary *)dict
+                  withResolver:(RCTPromiseResolveBlock)resolve
+                  withReject:(RCTPromiseRejectBlock)reject)
+{
+    [[SKRNMLKitFaceDetectionVisionCameraFrameProcessor sharedInstance] initializeDetectorAtIndex:index withOptions:dict];
+}
+RCT_EXPORT_METHOD(clearDetectorAtIndex:(int)index
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withReject:(RCTPromiseRejectBlock)reject)
+{
+    [[SKRNMLKitFaceDetectionVisionCameraFrameProcessor sharedInstance] clearDetectorAtIndex:index];
+}
+RCT_REMAP_METHOD(clearDetector,
+                 clearDetector:(int)index
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withReject:(RCTPromiseRejectBlock)reject)
+{
+    [[SKRNMLKitFaceDetectionVisionCameraFrameProcessor sharedInstance] clearDetectorAtIndex:0];
+}
+#endif
+#pragma mark - End Vision Camera methods
 
 + (BOOL)requiresMainQueueSetup {
     return YES;
@@ -69,18 +102,18 @@ RCT_EXPORT_METHOD(multiply:(nonnull NSNumber*)a withB:(nonnull NSNumber*)b
         std::shared_ptr<SKRNMLKitiOSFaceDetector>ret =  std::make_shared<SKRNMLKitiOSFaceDetector>(_performanceMode, _landmarkMode, _contourMode, _minFaceSize, _trackingEnabled);
         return ret;
     });
-//#if HAS_VISION_CAMERA
-//    [[SKRNMLKitPoseDetectionVisionCameraFrameProcessor sharedInstance] initialize];
-//#endif
+#if HAS_VISION_CAMERA
+    [[SKRNMLKitFaceDetectionVisionCameraFrameProcessor sharedInstance] initialize];
+#endif
 }
 
 - (void)invalidate {
     RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
     facebook::jsi::Runtime *runtime = (facebook::jsi::Runtime *)cxxBridge.runtime;
     SKRNMLKitFaceDetection::cleanup(*runtime);
-//#if HAS_VISION_CAMERA
-//    [[SKRNMLKitPoseDetectionVisionCameraFrameProcessor sharedInstance] invalidate];
-//#endif
+#if HAS_VISION_CAMERA
+    [[SKRNMLKitFaceDetectionVisionCameraFrameProcessor sharedInstance] invalidate];
+#endif
 }
 
 

@@ -19,6 +19,34 @@ using namespace SKRNMLKitFaceDetection;
 
 #pragma mark - FaceDetector Class
 
+static BOOL dictPropertyIsEqualToString(NSDictionary *dict, NSString *propKey, NSString *compareWith) {
+    return [dict[propKey] isEqualToString:compareWith];
+}
+
+//SKRNMLKitiOSFaceDetector SKRNMLKitiOSFaceDetector::createWithNativeOptions(NSDictionary *obj) {
+//    SKRNMLKitFaceDetector::PerformanceMode performanceMode = SKRNMLKitFaceDetector::PerformanceModeFast;
+//    SKRNMLKitFaceDetector::LandmarkMode landmarkMode = SKRNMLKitFaceDetector::LandmarkModeNone;
+//    SKRNMLKitFaceDetector::ContourMode contourMode = SKRNMLKitFaceDetector::ContourModeNone;
+//    float minFaceSize = 0.1;
+//    bool trackingEnabled = false;
+//    if(obj && obj.count) {
+//        performanceMode = dictPropertyIsEqualToString(obj, @"performanceMode", @"accurate")  ? SKRNMLKitFaceDetector::PerformanceModeAccurate : SKRNMLKitFaceDetector::PerformanceModeFast;
+//        landmarkMode = dictPropertyIsEqualToString(obj, @"landmarkMode", @"all")
+//        ? SKRNMLKitFaceDetector::LandmarkModeAll : SKRNMLKitFaceDetector::LandmarkModeNone;
+//        contourMode = dictPropertyIsEqualToString(obj, @"contourMode", @"all")
+//        ? SKRNMLKitFaceDetector::ContourModeAll : SKRNMLKitFaceDetector::ContourModeNone;
+//        id minFaceVal = obj[@"minFaceSize"];
+//        if([minFaceVal isKindOfClass:[NSNumber class]]) {
+//            minFaceSize = [minFaceVal floatValue];
+//        }
+//        id trackingEnabledVal = obj[@"trackingEnabled"];
+//        if([trackingEnabledVal isKindOfClass:[NSNumber class]]) {
+//            trackingEnabled = [trackingEnabledVal boolValue];
+//        }
+//    }
+//    return SKRNMLKitiOSFaceDetector(performanceMode, landmarkMode, contourMode, minFaceSize, trackingEnabled);
+//}
+
 SKRNMLKitiOSFaceDetector::SKRNMLKitiOSFaceDetector(PerformanceMode _performanceMode, LandmarkMode _landmarkMode, ContourMode _contourMode, float _minFaceSize, bool _trackingEnabled) : SKRNMLKitFaceDetector(_performanceMode, _landmarkMode, _contourMode, _minFaceSize, _trackingEnabled) {
     if(performanceMode == PerformanceModeFast
        ) {
@@ -36,11 +64,9 @@ SKRNMLKitiOSFaceDetector::~SKRNMLKitiOSFaceDetector() {
     faceDetector = nil;
 }
 
-#ifdef HAS_SKRN_NATIVE_VIDEO
-std::vector<std::shared_ptr<SKRNMLKitMLKFace>> SKRNMLKitiOSFaceDetector::process(std::shared_ptr<SKRNNativeVideo::SKNativeFrameWrapper> frameWrapper) {
-    SKiOSNativeFrameWrapper *frame = (SKiOSNativeFrameWrapper *)(frameWrapper.get());
-    MLKVisionImage *image = [[MLKVisionImage alloc] initWithBuffer:frame->buffer];
-    image.orientation = frame->orientation;
+std::vector<std::shared_ptr<SKRNMLKitMLKFace>> SKRNMLKitiOSFaceDetector::processNative(CMSampleBufferRef buffer, UIImageOrientation orientation) {
+    MLKVisionImage *image = [[MLKVisionImage alloc] initWithBuffer:buffer];
+    image.orientation = orientation;
     NSError *error;
     NSArray <MLKFace *>*faces = [faceDetector resultsInImage:image error:&error];
     if(error) {
@@ -56,6 +82,13 @@ std::vector<std::shared_ptr<SKRNMLKitMLKFace>> SKRNMLKitiOSFaceDetector::process
         ret.push_back(std::make_shared<SKRNMLKitiOSMLKFace>(face));
     }
     return ret;
+}
+
+
+#ifdef HAS_SKRN_NATIVE_VIDEO
+std::vector<std::shared_ptr<SKRNMLKitMLKFace>> SKRNMLKitiOSFaceDetector::process(std::shared_ptr<SKRNNativeVideo::SKNativeFrameWrapper> frameWrapper) {
+    SKiOSNativeFrameWrapper *frame = (SKiOSNativeFrameWrapper *)(frameWrapper.get());
+    return processNative(frame->buffer, frame->orientation);
 };
 
 #endif
@@ -130,4 +163,79 @@ std::shared_ptr<SKRNMLKitMLKFaceContour> SKRNMLKitiOSMLKFace::contourOfType(std:
     
     return std::shared_ptr<SKRNMLKitMLKFaceContour>();
 };
+
+/*
+ static std::vector<std::string> nativeMLKFaceDetectionHostObjectKeys = {
+     "frame",
+     "landmarks",
+     "contours",
+     "hasTrackingID",
+     "trackingID",
+     "hasHeadEulerAngleX",
+     "headEulerAngleX",
+     "hasHeadEulerAngleY",
+     "headEulerAngleY",
+     "hasHeadEulerAngleZ",
+     "headEulerAngleZ",
+     "hasSmilingProbability",
+     "smilingProbability",
+     "hasLeftEyeOpenProbability",
+     "leftEyeOpenProbability",
+     "hasRightEyeOpenProbability",
+     "rightEyeOpenProbability"
+ };
+ */
+static NSDictionary *dictForMLKFacePoint(SKRNMLKitMLKFacePoint pos) {
+    return @{ @"x": @(pos.x), @"y": @(pos.y) };
+}
+static NSArray *arrayForMLKFacePoints(std::vector<SKRNMLKitMLKFacePoint> &ps) {
+    NSMutableArray *points = [NSMutableArray new];
+    for(auto p : ps) {
+        [points addObject:dictForMLKFacePoint(p)];
+    }
+    return points;
+}
+
+NSDictionary *SKRNMLKitiOSMLKFace::createNativeDictionary() {
+    NSMutableDictionary *ret = [NSMutableDictionary new];
+    SKRNMLKitMLKFaceRect rect = frame();
+    ret[@"frame"] = @{@"x":@(rect.x), @"y":@(rect.y), @"width":@(rect.width), @"height":@(rect.height)};
+    NSMutableDictionary *landmarksDict = [NSMutableDictionary new];
+    std::vector<std::shared_ptr<SKRNMLKitMLKFaceLandmark>> lms = landmarks();
+    for(std::shared_ptr<SKRNMLKitMLKFaceLandmark> lm : lms) {
+        NSString *typeStr = [NSString stringWithUTF8String:lm->type.c_str()];
+        NSDictionary *landmark = @{
+            @"type": typeStr,
+            @"position": dictForMLKFacePoint(lm.get()->position)
+        };
+        landmarksDict[typeStr] = landmark;
+    }
+    ret[@"landmarks"] = landmarksDict;
+    NSMutableDictionary *contoursDict = [NSMutableDictionary new];
+    std::vector<std::shared_ptr<SKRNMLKitMLKFaceContour>> cnts = contours();
+    for(std::shared_ptr<SKRNMLKitMLKFaceContour> cnt : cnts) {
+        NSArray *facePoints = arrayForMLKFacePoints(cnt->points);
+        NSString *typeStr = [NSString stringWithUTF8String:cnt->type.c_str()];
+        contoursDict[typeStr] = @{
+            @"type": typeStr,
+            @"points": facePoints
+        };
+    }
+    // Generate code from strings array
+    ret[@"hasTrackingID"] = @(hasTrackingID());
+    ret[@"trackingID"] = @(trackingID());
+    ret[@"hasHeadEulerAngleX"] = @(hasHeadEulerAngleX());
+    ret[@"headEulerAngleX"] = @(headEulerAngleX());
+    ret[@"hasHeadEulerAngleY"] = @(hasHeadEulerAngleY());
+    ret[@"headEulerAngleY"] = @(headEulerAngleY());
+    ret[@"hasHeadEulerAngleZ"] = @(hasHeadEulerAngleZ());
+    ret[@"headEulerAngleZ"] = @(headEulerAngleZ());
+    ret[@"hasSmilingProbability"] = @(hasSmilingProbability());
+    ret[@"smilingProbability"] = @(smilingProbability());
+    ret[@"hasLeftEyeOpenProbability"] = @(hasLeftEyeOpenProbability());
+    ret[@"leftEyeOpenProbability"] = @(leftEyeOpenProbability());
+    ret[@"hasRightEyeOpenProbability"] = @(hasRightEyeOpenProbability());
+    ret[@"rightEyeOpenProbability"] = @(rightEyeOpenProbability());
+    return ret;
+}
 

@@ -101,6 +101,26 @@ export interface SKRNMLKitMLKFace {
   landmarkOfType(type: SKRNMLKitFaceDetectionLandmarkType): SKRNMLKitMLKFaceLandmark | undefined;
 }
 
+export interface SKRNMLKitMLKVisionCameraFace {
+  frame: SKRNMLKitRect;
+  landmarks: Record<SKRNMLKitFaceDetectionLandmarkType, SKRNMLKitMLKFaceLandmark>;
+  contours: Record<SKRNMLKitFaceDetectionContourType, SKRNMLKitMLKFaceContour>;
+  hasTrackingID: boolean;
+  trackingID: number;
+  hasHeadEulerAngleX: boolean;
+  headEulerAngleX: number;
+  hasHeadEulerAngleY: boolean;
+  headEulerAngleY: number;
+  hasHeadEulerAngleZ: boolean;
+  headEulerAngleZ: number;
+  hasSmilingProbability: boolean;
+  smilingProbability: number;
+  hasLeftEyeOpenProbability: boolean;
+  leftEyeOpenProbability: number;
+  hasRightEyeOpenProbability: boolean;
+  rightEyeOpenProbability: number;
+}
+
 export interface SKRNMLKitFaceDetector {
   process(frame: NativeFrameWrapper): SKRNMLKitMLKFace[];
 }

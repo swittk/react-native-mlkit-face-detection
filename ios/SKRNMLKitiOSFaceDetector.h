@@ -12,6 +12,7 @@
 #import "react-native-mlkit-face-detection.h"
 #import <MLKitVision/MLKitVision.h>
 #import <MLKitFaceDetection/MLKitFaceDetection.h>
+#import "SKRNMLKitFaceDetection.h"
 
 namespace SKRNMLKitFaceDetection {
 
@@ -42,14 +43,16 @@ public:
     virtual std::shared_ptr<SKRNMLKitMLKFaceLandmark> landmarkOfType(std::string landmarkType);
     // Result is nullable.
     virtual std::shared_ptr<SKRNMLKitMLKFaceContour> contourOfType(std::string contourType);
+    
+    NSDictionary *createNativeDictionary();
 };
 
 class SKRNMLKitiOSFaceDetector : public SKRNMLKitFaceDetector {
 public:
-    MLKFaceDetector *faceDetector;
-    
+    MLKFaceDetector *faceDetector;    
     SKRNMLKitiOSFaceDetector(PerformanceMode _performanceMode = PerformanceModeFast, LandmarkMode _landmarkMode = LandmarkModeNone, ContourMode _contourMode = ContourModeNone, float _minFaceSize = 0.1, bool _trackingEnabled = false);
     ~SKRNMLKitiOSFaceDetector();
+    virtual std::vector<std::shared_ptr<SKRNMLKitMLKFace>> processNative(CMSampleBufferRef buf, UIImageOrientation orientation);
 #ifdef HAS_SKRN_NATIVE_VIDEO
     virtual std::vector<std::shared_ptr<SKRNMLKitMLKFace>> process(std::shared_ptr<SKRNNativeVideo::SKNativeFrameWrapper>);
 #endif

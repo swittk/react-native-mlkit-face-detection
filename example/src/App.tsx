@@ -5,6 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { openVideo, NativeVideoWrapper, NativeVideoFrameView, NativeFrameWrapper } from 'react-native-native-video';
 
 import { MLKitFaceDetector } from 'react-native-mlkit-face-detection';
+import { TestVisionCamera } from './TestVisionCamera';
 // import { TestVisionCamera } from './TestVisionCamera';
 // initializeVisionCameraFrameProcessor();
 
@@ -76,8 +77,7 @@ export default function App() {
           />
         </View>
           :
-          // <TestVisionCamera />
-          <></>
+          <TestVisionCamera />
       }
 
     </View>

@@ -1,6 +1,6 @@
 {
   "name": "react-native-mlkit-face-detection",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Face Detection using MLKit",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
