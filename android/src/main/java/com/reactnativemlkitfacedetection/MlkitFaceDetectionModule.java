@@ -10,7 +10,7 @@ import com.facebook.react.module.annotations.ReactModule;
 
 @ReactModule(name = MlkitFaceDetectionModule.NAME)
 public class MlkitFaceDetectionModule extends ReactContextBaseJavaModule {
-    public static final String NAME = "MlkitFaceDetection";
+    public static final String NAME = "SKRNMlkitFaceDetection";
 
     public MlkitFaceDetectionModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -25,7 +25,7 @@ public class MlkitFaceDetectionModule extends ReactContextBaseJavaModule {
     static {
         try {
             // Used to load the 'native-lib' library on application startup.
-            System.loadLibrary("cpp");
+            System.loadLibrary("SKRNMLKitFaceDetection");
         } catch (Exception ignored) {
         }
     }

@@ -3,9 +3,9 @@
 #include <memory>
 #include <jsi/jsi.h>
 #include <map>
-#if __has_include(<react-native-native-video/react-native-native-video.h>)
+#if __has_include("react-native-native-video.h")
 #define HAS_SKRN_NATIVE_VIDEO 1
-#include <react-native-native-video/react-native-native-video.h>
+#include "react-native-native-video.h"
 #endif
 
 // Stub classes
@@ -30,6 +30,7 @@ public:
     facebook::jsi::Object toJSI(facebook::jsi::Runtime &runtime);
 };
 
+// TODO: ADD ClassificationMode parameter
 class SKRNMLKitMLKFaceRect {
 public:
     double x;
@@ -60,7 +61,7 @@ public:
 class SKRNMLKitMLKFace : public facebook::jsi::HostObject {
     facebook::jsi::Value get(facebook::jsi::Runtime &runtime, const facebook::jsi::PropNameID &name);
     std::vector<facebook::jsi::PropNameID> getPropertyNames(facebook::jsi::Runtime& rt);
-    
+
     //Override all these below
     virtual SKRNMLKitMLKFaceRect frame() {return SKRNMLKitMLKFaceRect::Zero();}
     virtual std::vector<std::shared_ptr<SKRNMLKitMLKFaceLandmark>> landmarks() {
@@ -113,14 +114,14 @@ public:
     enum LandmarkMode { LandmarkModeNone = 0, LandmarkModeAll = 1 };
     enum ContourMode { ContourModeNone = 0, ContourModeAll = 1 };
     enum ClassificationMode { ClassificationModeNone = 0, ClassificationModeAll = 1 };
-    
+
     PerformanceMode performanceMode;
     LandmarkMode landmarkMode;
     ContourMode contourMode;
     ClassificationMode classificationMode;
     float minFaceSize;
     bool isTrackingEnabled;
-    
+
     SKRNMLKitFaceDetector(PerformanceMode _performanceMode = PerformanceModeFast, LandmarkMode _landmarkMode = LandmarkModeNone, ContourMode _contourMode = ContourModeNone, float _minFaceSize = 0.1, bool _trackingEnabled = false);
     //    SKRNMLKitFaceDetector(std::map<std::string, std::string> options);
     facebook::jsi::Value get(facebook::jsi::Runtime &runtime, const facebook::jsi::PropNameID &name);
