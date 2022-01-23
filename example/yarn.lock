@@ -4299,10 +4299,10 @@ react-native-codegen@^0.0.6:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
-react-native-native-video@^0.2.15:
-  version "0.2.15"
-  resolved "https://registry.yarnpkg.com/react-native-native-video/-/react-native-native-video-0.2.15.tgz#6cf0ccb70acf02b53e1ca0a838f22a38cc726969"
-  integrity sha512-W5Le4lLBJvFUuEjd6HrKDqGIyjPnXGGj3Ej6uIdht9Ulkmu/blOQ1mhKYxrd8NgB8KlHg51/qd0FNEyFxgsyoQ==
+react-native-native-video@^0.2.19:
+  version "0.2.19"
+  resolved "https://registry.yarnpkg.com/react-native-native-video/-/react-native-native-video-0.2.19.tgz#74f75ad14d7cead2d6b8c8f469faabff4684060e"
+  integrity sha512-2fFNb25Z1GHGFWdXA+yNJHay5cW11bSbrQjyFtPcdaXNll7jh3yq+dIvTn+zynBu1KNqRZzceRdzqk8iGnpULg==
 
 react-native-reanimated@~2.3.1:
   version "2.3.1"

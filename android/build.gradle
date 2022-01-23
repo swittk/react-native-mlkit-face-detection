@@ -12,11 +12,20 @@ static def findNodeModules(baseDir) {
     }
     basePath = basePath.getParent()
   }
-  throw new GradleException("VisionCamera: Failed to find node_modules/ path!")
+  throw new GradleException("SKRNMLKitFaceDetection: Failed to find node_modules/ path!")
 }
 
 def nodeModules = findNodeModules(projectDir)
+logger.warn("ReactNativeMLKitFaceDetection: node_modules/ found at: ${nodeModules}")
+
 def hasVisionCamera = file("${nodeModules}/react-native-vision-camera/package.json").exists()
+def hasNativeVideo = file("${nodeModules}/react-native-native-video/package.json").exists()
+if(hasNativeVideo) {
+  logger.warn("Has react-native-native-video :)")
+}
+def reactProperties = new Properties()
+file("$nodeModules/react-native/ReactAndroid/gradle.properties").withInputStream { reactProperties.load(it) }
+def REACT_NATIVE_VERSION = reactProperties.getProperty("VERSION_NAME").split("\\.")[1].toInteger()
 
 //def reactNative = new File("$nodeModules/react-native")
 
@@ -52,6 +61,10 @@ android {
             cmake {
                 cppFlags "-O2 -frtti -fexceptions -Wall -fstack-protector-all"
                 abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+              // This is how the NODE_MODULES_DIR magic variable appears in our CMAKELISTS file
+              arguments "-DNODE_MODULES_DIR=${nodeModules}",
+                // This is how the REACT_NATIVE_VERSION magic variable appears in our CMAKELISTS file
+                "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}"
             }
         }
 
@@ -95,5 +108,8 @@ dependencies {
     if(hasVisionCamera) {
       implementation "androidx.camera:camera-core:1.1.0-alpha12"
       implementation "androidx.camera:camera-camera2:1.1.0-alpha12"
+    }
+    if(hasNativeVideo) {
+      implementation project(":react-native-native-video")
     }
 }

@@ -326,7 +326,7 @@ PODS:
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
   - React-jsinspector (0.64.3)
-  - react-native-mlkit-face-detection (0.1.0):
+  - react-native-mlkit-face-detection (0.1.2):
     - GoogleMLKit/FaceDetection (= 2.5.0)
     - React-Core
   - react-native-native-video (0.2.15):
@@ -652,7 +652,7 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
-  react-native-mlkit-face-detection: 3780ef39364836ed39516ed9f52b7ce94eb28a69
+  react-native-mlkit-face-detection: 7cfd0384e71ab852b06e6438c4b5d5fd897f5762
   react-native-native-video: 1a9622eaf1eb7bd30debf2adad18b9705838ea06
   React-perflogger: cc76a4254d19640f1d8ad1c66fdee800414b805c
   React-RCTActionSheet: 7448f049318d8d7e8a9a1ebb742ada721757eea8

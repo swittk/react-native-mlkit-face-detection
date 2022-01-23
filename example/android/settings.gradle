@@ -2,5 +2,14 @@ rootProject.name = 'MlkitFaceDetectionExample'
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'
 
+apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle")
+useExpoModules()
+
 include ':reactnativemlkitfacedetection'
 project(':reactnativemlkitfacedetection').projectDir = new File(rootProject.projectDir, '../../android')
+
+include ':react-native-native-video'
+project(':react-native-native-video').projectDir = new File(rootProject.projectDir, '../../android')
+
+include ':VisionCamera'
+project(':VisionCamera').projectDir = new File(rootProject.projectDir, '../../android')
