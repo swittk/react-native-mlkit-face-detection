@@ -49,8 +49,30 @@ def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
+
+// This is how the NODE_MODULES_DIR magic variable appears in our CMAKELISTS file
+String[] cmakeArgs;
+if(hasNativeVideo) {
+  cmakeArgs = ["-DNODE_MODULES_DIR=${nodeModules}",
+                  // This is how the REACT_NATIVE_VERSION magic variable appears in our CMAKELISTS file
+                  "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}",
+  "-DHAS_RN_NATIVE_VIDEO=1"]
+}
+else {
+  cmakeArgs = ["-DNODE_MODULES_DIR=${nodeModules}",
+               // This is how the REACT_NATIVE_VERSION magic variable appears in our CMAKELISTS file
+               "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}"]
+}
+
+def getExtOrDefaultValue(name, defaultValue) {
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : defaultValue
+}
+
+
 android {
     compileSdkVersion safeExtGet('MlkitFaceDetection_compileSdkVersion', 29)
+    ndkVersion getExtOrDefaultValue('ndkVersion', '21.4.7075529')
+    
     defaultConfig {
         minSdkVersion safeExtGet('MlkitFaceDetection_minSdkVersion', 16)
         targetSdkVersion safeExtGet('MlkitFaceDetection_targetSdkVersion', 29)
@@ -61,10 +83,7 @@ android {
             cmake {
                 cppFlags "-O2 -frtti -fexceptions -Wall -fstack-protector-all"
                 abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
-              // This is how the NODE_MODULES_DIR magic variable appears in our CMAKELISTS file
-              arguments "-DNODE_MODULES_DIR=${nodeModules}",
-                // This is how the REACT_NATIVE_VERSION magic variable appears in our CMAKELISTS file
-                "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}"
+              arguments cmakeArgs
             }
         }
 
@@ -94,7 +113,7 @@ repositories {
     mavenLocal()
     maven {
         // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-        url("$rootDir/../node_modules/react-native/android")
+        url("$nodeModules/react-native/android")
     }
     google()
     mavenCentral()
@@ -109,7 +128,7 @@ dependencies {
       implementation "androidx.camera:camera-core:1.1.0-alpha12"
       implementation "androidx.camera:camera-camera2:1.1.0-alpha12"
     }
-    if(hasNativeVideo) {
-      implementation project(":react-native-native-video")
-    }
+//    if(hasNativeVideo) {
+//      implementation project("react-native-native-video")
+//    }
 }

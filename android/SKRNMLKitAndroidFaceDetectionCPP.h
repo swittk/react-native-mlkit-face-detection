@@ -164,7 +164,7 @@ namespace SKRNMLKitFaceDetection {
                 float _minFaceSize = 0.1,
                 bool _trackingEnabled = false);
         ~SKRNMLKitAndroidFaceDetector();
-#ifdef HAS_SKRN_NATIVE_VIDEO
+#if HAS_SKRN_NATIVE_VIDEO
         virtual std::vector<std::shared_ptr<SKRNMLKitMLKFace>> process(std::shared_ptr<SKRNNativeVideo::SKNativeFrameWrapper>);
 #endif
     };

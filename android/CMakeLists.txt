@@ -19,6 +19,18 @@ set (
 endif()
 
 
+if(${HAS_RN_NATIVE_VIDEO})
+message(STATUS "CMAKE : RN MLKit Face Detection :: Linking with RN Native Video")
+set (
+    IMPORT_NATIVE_VIDEO_COMMON_CPP
+    "${NODE_MODULES_DIR}/react-native-native-video/cpp/react-native-native-video.cpp"
+)
+set(
+    IMPORT_NATIVE_VIDEO_ANDROID_CPP
+    "${NODE_MODULES_DIR}/react-native-native-video/android/SKAndroidNativeVideoCPP.cpp"
+)
+endif()
+
 add_library(${PACKAGE_NAME}
             SHARED
             ${INCLUDE_JSI_CPP}
@@ -26,6 +38,8 @@ add_library(${PACKAGE_NAME}
             ../cpp/react-native-mlkit-face-detection.cpp
             cpp-adapter.cpp
             SKRNMLKitAndroidFaceDetectionCPP.cpp
+            ${IMPORT_NATIVE_VIDEO_COMMON_CPP}
+            ${IMPORT_NATIVE_VIDEO_ANDROID_CPP}
 )
 
 # Specifies a path to native header files.

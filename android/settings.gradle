@@ -1,7 +1,7 @@
-// rootProject.name = 'reactnativemlkitfacedetection'
+ rootProject.name = 'reactnativemlkitfacedetection'
 // import java.nio.file.Paths
-// include ':react-native-native-video'
-
+// include 'react-native-native-video'
+//
 // static def findNodeModules(baseDir) {
 //   def basePath = baseDir.toPath().normalize()
 //   // Node's module resolution algorithm searches up to the root directory,
@@ -16,9 +16,10 @@
 //   }
 //   throw new GradleException("SKRNMLKitFaceDetection: Failed to find node_modules/ path!")
 // }
-
+//
 // def nodeModules = findNodeModules(rootProject.projectDir)
+//logger.warn("projectdir of rnnv ${project(':react-native-native-video').projectDir}")
 // project(':react-native-native-video').projectDir = new File("$nodeModules/react-native/react-native-native-video/android/");
 // logger.warn("Assigned new projectDir to nativeVideo ${"$nodeModules/react-native/react-native-native-video/android/"}")
 
-// include ':reactnativemlkitfacedetection'
+//  include ':reactnativemlkitfacedetection'

@@ -8,8 +8,10 @@ useExpoModules()
 include ':reactnativemlkitfacedetection'
 project(':reactnativemlkitfacedetection').projectDir = new File(rootProject.projectDir, '../../android')
 
-include ':react-native-native-video'
-project(':react-native-native-video').projectDir = new File(rootProject.projectDir, '../../android')
+//include ':react-native-native-video'
+//project(':react-native-native-video').projectDir = new File(rootProject.projectDir, '../../android')
+//project(':react-native-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-native-video/android')
+//project(':react-native-native-video').projectDir = new File(rootProject.projectDir, '../../node_modules/react-native-native-video/android')
 
-include ':VisionCamera'
-project(':VisionCamera').projectDir = new File(rootProject.projectDir, '../../android')
+//include ':VisionCamera'
+//project(':VisionCamera').projectDir = new File(rootProject.projectDir, '../../android')

@@ -11,13 +11,13 @@ int multiply(float a, float b) {
 
 SKRNMLKitFaceDetector::SKRNMLKitFaceDetector(PerformanceMode _performanceMode, LandmarkMode _landmarkMode, ContourMode _contourMode, float _minFaceSize, bool _trackingEnabled) :
 performanceMode(_performanceMode), landmarkMode(_landmarkMode), contourMode(_contourMode), minFaceSize(_minFaceSize), isTrackingEnabled(_trackingEnabled) {
-    
+
 }
 facebook::jsi::Value SKRNMLKitFaceDetector::get(facebook::jsi::Runtime &runtime, const facebook::jsi::PropNameID &name) {
     std::string methodName = name.utf8(runtime);
     long long methodSwitch = string_hash(methodName.c_str());
     switch (methodSwitch) {
-#ifdef HAS_SKRN_NATIVE_VIDEO
+#if HAS_SKRN_NATIVE_VIDEO
         case "process"_sh:{
             return jsi::Function::createFromHostFunction(runtime, name, 1, [&](jsi::Runtime &runtime, const jsi::Value &thisValue, const jsi::Value *arguments,
                                                                                size_t count) -> jsi::Value
@@ -231,7 +231,7 @@ void SKRNMLKitFaceDetection::install(
                                       bool _trackingEnabled
                                       )> detectorConstructor
                                      ) {
-    
+
     auto poseDetectorConstructorFunction =
     jsi::Function::createFromHostFunction
     (
@@ -247,7 +247,7 @@ void SKRNMLKitFaceDetection::install(
          SKRNMLKitFaceDetector::ContourMode contourMode = SKRNMLKitFaceDetector::ContourModeNone;
          float minFaceSize = 0.1;
          bool trackingEnabled = false;
-         
+
          if(count > 0) {
              jsi::Object obj = arguments[0].asObject(runtime);
              performanceMode = objectPropertyIsEqualToString(runtime, obj, "performanceMode", "accurate")  ? SKRNMLKitFaceDetector::PerformanceModeAccurate : SKRNMLKitFaceDetector::PerformanceModeFast;
@@ -273,5 +273,5 @@ void SKRNMLKitFaceDetection::install(
 }
 //void install(facebook::jsi::Runtime &jsiRuntime, std::shared_ptr<facebook::react::CallInvoker> invoker);
 void SKRNMLKitFaceDetection::cleanup(facebook::jsi::Runtime &jsiRuntime) {
-    
+
 }

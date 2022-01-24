@@ -4299,10 +4299,10 @@ react-native-codegen@^0.0.6:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
-react-native-native-video@^0.2.19:
-  version "0.2.19"
-  resolved "https://registry.yarnpkg.com/react-native-native-video/-/react-native-native-video-0.2.19.tgz#74f75ad14d7cead2d6b8c8f469faabff4684060e"
-  integrity sha512-2fFNb25Z1GHGFWdXA+yNJHay5cW11bSbrQjyFtPcdaXNll7jh3yq+dIvTn+zynBu1KNqRZzceRdzqk8iGnpULg==
+react-native-native-video@^0.2.21:
+  version "0.2.21"
+  resolved "https://registry.yarnpkg.com/react-native-native-video/-/react-native-native-video-0.2.21.tgz#3eda43ad1b503607fb896fbf736760926d5f700b"
+  integrity sha512-9LXbMvqNLgQ5lkr0ario+/wGQbuWoLBJXfU6mNA3wCyAkJZyV/N5ud/yvXRK3WRXtEj3JKbi7PCgLIWWv7ZdcQ==
 
 react-native-reanimated@~2.3.1:
   version "2.3.1"
@@ -4324,11 +4324,6 @@ react-native-screens@^3.4.0:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
-
-react-native-vision-camera@^2.12.0:
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-2.12.0.tgz#e174798e04676c57ec2633222a954156fd77e48c"
-  integrity sha512-sc6h1OS8Xei/w6roeHix7bcJC6ml8fW+w1slWxQDYYsch1tb65xflMVQ71SNjyE9FN3KyrojLEqZqgN4iDzL9g==
 
 react-native@0.64.3:
   version "0.64.3"

@@ -4952,16 +4952,6 @@ react-native-codegen@^0.0.6:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
-react-native-native-video@^0.2.19:
-  version "0.2.19"
-  resolved "https://registry.yarnpkg.com/react-native-native-video/-/react-native-native-video-0.2.19.tgz#74f75ad14d7cead2d6b8c8f469faabff4684060e"
-  integrity sha512-2fFNb25Z1GHGFWdXA+yNJHay5cW11bSbrQjyFtPcdaXNll7jh3yq+dIvTn+zynBu1KNqRZzceRdzqk8iGnpULg==
-
-react-native-vision-camera@^2.12.0:
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-2.12.0.tgz#e174798e04676c57ec2633222a954156fd77e48c"
-  integrity sha512-sc6h1OS8Xei/w6roeHix7bcJC6ml8fW+w1slWxQDYYsch1tb65xflMVQ71SNjyE9FN3KyrojLEqZqgN4iDzL9g==
-
 react-native@0.64.3:
   version "0.64.3"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.64.3.tgz#40db6385963b4b17325f9cc86dd19132394b03fc"

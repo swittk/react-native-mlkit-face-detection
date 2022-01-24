@@ -1,5 +1,7 @@
 #include <SKRNMLKitAndroidFaceDetectionCPP.h>
-
+#if HAS_SKRN_NATIVE_VIDEO
+#include "SKAndroidNativeVideoCPP.h"
+#endif
 using namespace SKRNMLKitFaceDetection;
 
 //SKRNMLKitMLKFaceRect SKRNMLKitAndroidMLKFace::frame() {
@@ -8,7 +10,8 @@ using namespace SKRNMLKitFaceDetection;
 //            face.frame.size.height};
 //};
 #pragma mark - Face Object
-
+jclass SKRNMLKitAndroidMLKFace::javaClass;
+std::map<std::string, jmethodID> SKRNMLKitAndroidMLKFace::nativeMethodIDs;// = std::map<std::string, jmethodID>();
 SKRNMLKitAndroidMLKFace::SKRNMLKitAndroidMLKFace(JavaVM *_vm, jobject faceObject) : SKRNMLKitMLKFace(), jvm(_vm) {
     face = getJNIEnv()->NewGlobalRef(faceObject);
 }
@@ -19,12 +22,12 @@ SKRNMLKitAndroidMLKFace::~SKRNMLKitAndroidMLKFace() {
 }
 
 SKRNMLKitMLKFaceRect SKRNMLKitAndroidMLKFace::frame() {
-    jobject jRect = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getBoundingBox"]);
+    jobject jRect = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getBoundingBox"]);
     return AndroidJavaRect::toSKRNMLKitMLKFaceRect(getJNIEnv(), jRect);
 }
 std::vector<std::shared_ptr<SKRNMLKitMLKFaceLandmark>> SKRNMLKitAndroidMLKFace::landmarks() {
     JNIEnv *env = getJNIEnv();
-    jobject landmarksList = env->CallObjectMethod(face, nativeMethodIDs["getAllLandmarks"]);
+    jobject landmarksList = env->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getAllLandmarks"]);
     std::vector<jobject> list = JavaList::toVector(env, landmarksList);
     std::vector<std::shared_ptr<SKRNMLKitMLKFaceLandmark>> ret;
     for (jobject landmark : list) {
@@ -40,7 +43,7 @@ std::vector<std::shared_ptr<SKRNMLKitMLKFaceLandmark>> SKRNMLKitAndroidMLKFace::
 }
 std::vector<std::shared_ptr<SKRNMLKitMLKFaceContour>> SKRNMLKitAndroidMLKFace::contours() {
     JNIEnv *env = getJNIEnv();
-    jobject _list = env->CallObjectMethod(face, nativeMethodIDs["getAllContours"]);
+    jobject _list = env->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getAllContours"]);
     std::vector<jobject> list = JavaList::toVector(env, _list);
     std::vector<std::shared_ptr<SKRNMLKitMLKFaceContour>> ret;
     for (jobject obj : list) {
@@ -55,75 +58,75 @@ std::vector<std::shared_ptr<SKRNMLKitMLKFaceContour>> SKRNMLKitAndroidMLKFace::c
     return ret;
 }
 bool SKRNMLKitAndroidMLKFace::hasTrackingID() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getTrackingID"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getTrackingID"]);
     if(tid == nullptr) {return false;}
     return true;
 }
 size_t SKRNMLKitAndroidMLKFace::trackingID() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getTrackingID"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getTrackingID"]);
     return JavaInteger::value(getJNIEnv(), tid);
 }
 bool SKRNMLKitAndroidMLKFace::hasHeadEulerAngleX() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getHeadEulerAngleX"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getHeadEulerAngleX"]);
     if(tid == nullptr) {return false;}
     return true;
 }
 double SKRNMLKitAndroidMLKFace::headEulerAngleX() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getHeadEulerAngleX"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getHeadEulerAngleX"]);
     return JavaFloat::value(getJNIEnv(), tid);
 }
 bool SKRNMLKitAndroidMLKFace::hasHeadEulerAngleY() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getHeadEulerAngleY"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getHeadEulerAngleY"]);
     if(tid == nullptr) {return false;}
     return true;
 }
 double SKRNMLKitAndroidMLKFace::headEulerAngleY() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getHeadEulerAngleY"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getHeadEulerAngleY"]);
     return JavaFloat::value(getJNIEnv(), tid);
 }
 bool SKRNMLKitAndroidMLKFace::hasHeadEulerAngleZ() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getHeadEulerAngleZ"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getHeadEulerAngleZ"]);
     if(tid == nullptr) {return false;}
     return true;
 }
 double SKRNMLKitAndroidMLKFace::headEulerAngleZ() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getHeadEulerAngleZ"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getHeadEulerAngleZ"]);
     return JavaFloat::value(getJNIEnv(), tid);
 }
 
 bool SKRNMLKitAndroidMLKFace::hasSmilingProbability() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getSmilingProbability"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getSmilingProbability"]);
     if(tid == nullptr) {return false;}
     return true;
 }
 double SKRNMLKitAndroidMLKFace::smilingProbability() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getSmilingProbability"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getSmilingProbability"]);
     return JavaFloat::value(getJNIEnv(), tid);
 }
 
 bool SKRNMLKitAndroidMLKFace::hasLeftEyeOpenProbability() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getLeftEyeOpenProbability"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getLeftEyeOpenProbability"]);
     if(tid == nullptr) {return false;}
     return true;
 }
 
 double SKRNMLKitAndroidMLKFace::leftEyeOpenProbability() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getLeftEyeOpenProbability"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getLeftEyeOpenProbability"]);
     return JavaFloat::value(getJNIEnv(), tid);
 }
 bool SKRNMLKitAndroidMLKFace::hasRightEyeOpenProbability() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getRightEyeOpenProbability"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getRightEyeOpenProbability"]);
     if(tid == nullptr) {return false;}
     return true;
 }
 double SKRNMLKitAndroidMLKFace::rightEyeOpenProbability() {
-    jobject tid = getJNIEnv()->CallObjectMethod(face, nativeMethodIDs["getRightEyeOpenProbability"]);
+    jobject tid = getJNIEnv()->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getRightEyeOpenProbability"]);
     return JavaFloat::value(getJNIEnv(), tid);
 }
 std::shared_ptr<SKRNMLKitMLKFaceLandmark> SKRNMLKitAndroidMLKFace::landmarkOfType(std::string landmarkType) {
     JNIEnv *env = getJNIEnv();
     int _map = MLKitJavaFaceLandmark::mapLandmarkCrossToNative[landmarkType];
-    jobject l = env->CallObjectMethod(face, nativeMethodIDs["getLandmark"], _map);
+    jobject l = env->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getLandmark"], _map);
     return std::make_shared<SKRNMLKitMLKFaceLandmark>(
             MLKitJavaFaceLandmark::getLandmarkTypeString(env, l),
             MLKitJavaFaceLandmark::getPosition(env, l)
@@ -133,7 +136,7 @@ std::shared_ptr<SKRNMLKitMLKFaceLandmark> SKRNMLKitAndroidMLKFace::landmarkOfTyp
 std::shared_ptr<SKRNMLKitMLKFaceContour> SKRNMLKitAndroidMLKFace::contourOfType(std::string contourType) {
     JNIEnv *env = getJNIEnv();
     int _map = MLKitJavaFaceContour::mapContourCrossToNative[contourType];
-    jobject c = env->CallObjectMethod(face, nativeMethodIDs["getContour"], _map);
+    jobject c = env->CallObjectMethod(face, SKRNMLKitAndroidMLKFace::nativeMethodIDs["getContour"], _map);
     return std::make_shared<SKRNMLKitMLKFaceContour>(
             MLKitJavaFaceContour::getContourTypeString(env, c),
             MLKitJavaFaceContour::getPoints(env, c)
@@ -144,6 +147,17 @@ std::shared_ptr<SKRNMLKitMLKFaceContour> SKRNMLKitAndroidMLKFace::contourOfType(
 
 #pragma mark - Face detector
 
+jclass SKRNMLKitAndroidFaceDetector::javaClass;
+jmethodID SKRNMLKitAndroidFaceDetector::constructorID;
+std::map<std::string, jmethodID> SKRNMLKitAndroidFaceDetector::nativeMethodIDs;
+int SKRNMLKitAndroidFaceDetector::kLandmarkModeNone;
+int SKRNMLKitAndroidFaceDetector::kLandmarkModeAll;
+int SKRNMLKitAndroidFaceDetector::kContourModeNone;
+int SKRNMLKitAndroidFaceDetector::kContourModeAll;
+int SKRNMLKitAndroidFaceDetector::kClassificationModeNone;
+int SKRNMLKitAndroidFaceDetector::kClassificationModeAll;
+int SKRNMLKitAndroidFaceDetector::kPerformanceModeFast;
+int SKRNMLKitAndroidFaceDetector::kPerformanceModeAccurate;
 SKRNMLKitAndroidFaceDetector::SKRNMLKitAndroidFaceDetector(
         JavaVM *_vm,
 PerformanceMode _performanceMode,
@@ -164,6 +178,24 @@ SKRNMLKitAndroidFaceDetector::~SKRNMLKitAndroidFaceDetector() {
     env->DeleteGlobalRef(faceDetector);
 }
 
+#if HAS_SKRN_NATIVE_VIDEO
+std::vector<std::shared_ptr<SKRNMLKitMLKFace>> SKRNMLKitAndroidFaceDetector::process
+(std::shared_ptr<SKRNNativeVideo::SKNativeFrameWrapper> _frameWrapper) {
+    std::shared_ptr<SKRNNativeVideo::SKAndroidNativeFrameWrapper> frameWrapper =
+            std::dynamic_pointer_cast<SKRNNativeVideo::SKAndroidNativeFrameWrapper>(_frameWrapper);
+    jobject bitmap = frameWrapper->bitmap;
+    JNIEnv *env = getJNIEnv();
+    jobject listRet = env->CallObjectMethod(faceDetector, nativeMethodIDs["processBitmap"], bitmap);
+    std::vector<jobject> vecRet = JavaList::toVector(env, listRet);
+    std::vector<std::shared_ptr<SKRNMLKitMLKFace>> ret;
+    for(jobject obj : vecRet) {
+        ret.push_back(std::make_shared<SKRNMLKitAndroidMLKFace>(jvm, obj));
+//        ret.push_back(std::make_shared<SKRNMLKitMLKFace>())
+    }
+    return ret;
+}
+#endif
+
 
 
 #pragma mark - Convenience class implementations
@@ -176,10 +208,6 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     if(vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK) {
         return -1;
     }
-    jclass _faceDetectionClass = static_cast<jclass>(env->NewGlobalRef(env->FindClass("com/reactnativemlkitfacedetection/SKRNMLKitAndroidFaceDetectionJava")));
-    jmethodID _processBitmap = env->GetMethodID(_faceDetectionClass, "processBitmap", "(Landroid/graphics/Bitmap;I)Ljava/util/List;");
-    jmethodID _processImageProxy = env->GetMethodID(_faceDetectionClass, "processImageProxy", "(Ljava/lang/Object;)Ljava/util/List;");
-
     JavaInteger::initializeJNI(env);
     JavaFloat::initializeJNI(env);
     JavaList::initializeJNI(env);
@@ -187,8 +215,13 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     AndroidJavaPointF::initializeJNI(env);
     SKRNMLKitAndroidMLKFace::initializeJNI(env);
     SKRNMLKitAndroidFaceDetector::initializeJNI(env);
+    return JNI_VERSION_1_6;
 }
 
+
+// Static variables need to be defined too..
+jclass JavaInteger::javaClass;
+jmethodID JavaInteger::m_value;
 void JavaInteger::initializeJNI(JNIEnv *env) {
     jclass _javaClass = static_cast<jclass>(env->NewGlobalRef(env->FindClass("java/lang/Integer")));
     javaClass = _javaClass;
@@ -198,6 +231,8 @@ int JavaInteger::value(JNIEnv *env, jobject obj) {
     if(obj == nullptr) return 0;
     return env->CallIntMethod(obj, m_value);
 }
+jclass JavaFloat::javaClass;
+jmethodID JavaFloat::m_value;
 void JavaFloat::initializeJNI(JNIEnv *env) {
     jclass _javaClass = static_cast<jclass>(env->NewGlobalRef(env->FindClass("java/lang/Float")));
     javaClass = _javaClass;
@@ -208,6 +243,11 @@ float JavaFloat::value(JNIEnv *env, jobject obj) {
     return env->CallFloatMethod(obj, m_value);
 }
 
+jclass JavaList::java_util_List;
+jmethodID JavaList::java_util_List_;
+ jmethodID JavaList::java_util_List_size;
+ jmethodID JavaList::java_util_List_get;
+ jmethodID JavaList::java_util_List_add;
 void JavaList::initializeJNI(JNIEnv *env) {
     java_util_List      = static_cast<jclass>(env->NewGlobalRef(env->FindClass("java/util/List")));
     java_util_List_     = env->GetMethodID(java_util_List, "<init>", "()V");
@@ -227,7 +267,11 @@ std::vector<jobject> JavaList::toVector(JNIEnv *env, jobject arrayList) {
     return result;
 }
 
-
+ jclass AndroidJavaRect::javaClass;
+ jmethodID AndroidJavaRect::m_width;
+ jmethodID AndroidJavaRect::m_height;
+ jfieldID AndroidJavaRect::f_top;
+ jfieldID AndroidJavaRect::f_left;
 void AndroidJavaRect::initializeJNI(JNIEnv *env) {
     jclass _javaClass = static_cast<jclass>(env->NewGlobalRef(env->FindClass("android/graphics/Rect")));
     javaClass = _javaClass;
@@ -236,6 +280,9 @@ void AndroidJavaRect::initializeJNI(JNIEnv *env) {
     m_width = env->GetMethodID(_javaClass, "width", "()I");
     m_height = env->GetMethodID(_javaClass, "height", "()I");
 }
+ jclass AndroidJavaPointF::javaClass;
+ jfieldID AndroidJavaPointF::f_x;
+ jfieldID AndroidJavaPointF::f_y;
 void AndroidJavaPointF::initializeJNI(JNIEnv *env) {
     jclass _cls = static_cast<jclass>(env->NewGlobalRef(env->FindClass("android/graphics/PointF")));
     javaClass = _cls;
@@ -269,7 +316,7 @@ void SKRNMLKitAndroidFaceDetector::initializeJNI(JNIEnv *env) {
     kPerformanceModeAccurate = env->GetStaticIntField(a, env->GetStaticFieldID(a, "PERFORMANCE_MODE_ACCURATE", "I"));
     kPerformanceModeFast = env->GetStaticIntField(a, env->GetStaticFieldID(a, "PERFORMANCE_MODE_FAST", "I"));
 
-    jclass _cls = env->FindClass("com/reactnativemlkitfacedetection/SKRNMLKitAndroidFaceDetectionJava");
+    jclass _cls = static_cast<jclass>(env->NewGlobalRef(env->FindClass("com/reactnativemlkitfacedetection/SKRNMLKitAndroidFaceDetectionJava")));
     javaClass = _cls;
     jmethodID ctor = env->GetMethodID(_cls, "<init>",
                                       "(IIIFZ)V");
@@ -339,6 +386,11 @@ void SKRNMLKitAndroidMLKFace::initializeJNI(JNIEnv *env) {
     nativeMethodIDs.insert(std::pair<std::string, jmethodID>("getRightEyeOpenProbability", _getRightEyeOpenProbability));
 }
 
+jclass MLKitJavaFaceLandmark::javaClass;
+jmethodID MLKitJavaFaceLandmark::m_getLandmarkType; // returns int
+jmethodID MLKitJavaFaceLandmark::m_getPosition; // returns PointF
+std::map<std::string, int> MLKitJavaFaceLandmark::mapLandmarkCrossToNative;
+std::map<int, std::string> MLKitJavaFaceLandmark::mapLandmarkNativeToCross;
 void MLKitJavaFaceLandmark::initializeJNI(JNIEnv *env) {
     jclass _cls = static_cast<jclass>(env->NewGlobalRef(
             env->FindClass("com/google/mlkit/vision/face/FaceLandmark")));
@@ -394,6 +446,11 @@ SKRNMLKitMLKFacePoint MLKitJavaFaceLandmark::getPosition(JNIEnv *env, jobject ob
     jobject pos = env->CallObjectMethod(obj, m_getPosition);
     return SKRNMLKitMLKFacePoint((double)AndroidJavaPointF::x(env, pos), (double)AndroidJavaPointF::y(env, pos));
 }
+jclass MLKitJavaFaceContour::javaClass;
+jmethodID MLKitJavaFaceContour::m_getFaceContourType; // returns int
+jmethodID MLKitJavaFaceContour::m_getPoints; // returns list of PointF
+std::map<std::string, int> MLKitJavaFaceContour::mapContourCrossToNative;
+std::map<int, std::string> MLKitJavaFaceContour::mapContourNativeToCross;
 void MLKitJavaFaceContour::initializeJNI(JNIEnv *env) {
     jclass _cls = static_cast<jclass>(env->NewGlobalRef(
             env->FindClass("com/google/mlkit/vision/face/FaceContour")));
