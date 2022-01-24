@@ -1,6 +1,7 @@
 #include <SKRNMLKitAndroidFaceDetectionCPP.h>
 #if HAS_SKRN_NATIVE_VIDEO
 #include "SKAndroidNativeVideoCPP.h"
+#include "react-native-native-video.h"
 #endif
 using namespace SKRNMLKitFaceDetection;
 

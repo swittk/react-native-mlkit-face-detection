@@ -3,6 +3,8 @@
 Face Detection using MLKit
 (Currently iOS Only)
 
+Right now Android compiles when neither `react-native-native-video` or `react-native-vision-camera` is installed (which isn't very helpful), but right now has a problem with multiple definitions of JNI_OnLoad, which would cause compilation failures. Once that is solved then it should be usable.
+
 ## Installation
 
 ```sh

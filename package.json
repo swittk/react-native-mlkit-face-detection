@@ -58,7 +58,7 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "^0.64",
-    "react-native-native-video": "^0.2.21",
+    "react-native-native-video": "^0.2.22",
     "react-native-vision-camera": "^2.12.0"
   },
   "peerDependenciesMeta": {
@@ -103,5 +103,8 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "react-native-native-video": "^0.2.22"
   }
 }

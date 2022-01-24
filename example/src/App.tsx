@@ -47,8 +47,9 @@ export default function App() {
   const onMLKitFrame = async () => {
     if (!frame) { Alert.alert('Please pick a video frame first'); return; }
 
-    const results = faceDetector.current.process(frame);
+    // const results = faceDetector.current.process(frame);
     // console.log('results are', results.map((v) => v.landmarks()));
+    const results = faceDetector.current.process(undefined);
     console.log('result landmarks', results[0].landmarks);
   }
 

@@ -19,17 +19,23 @@ facebook::jsi::Value SKRNMLKitFaceDetector::get(facebook::jsi::Runtime &runtime,
     switch (methodSwitch) {
 #if HAS_SKRN_NATIVE_VIDEO
         case "process"_sh:{
-            return jsi::Function::createFromHostFunction(runtime, name, 1, [&](jsi::Runtime &runtime, const jsi::Value &thisValue, const jsi::Value *arguments,
+            return jsi::Function::createFromHostFunction(runtime, name, 1, [&](jsi::Runtime &rt, const jsi::Value &thisValue, const jsi::Value *arguments,
                                                                                size_t count) -> jsi::Value
                                                          {
+                // Right now in Android, it seems that using the runtime in any capacity (even when constructing functions) causes
+                // the app to crash. I still have no idea why. It's like... construction of this lambda function crashes as soon as
+                // any line references the runtime (either as `rt` (inner scope) or `runtime` (outer scope))
                 if(count < 1) {
-                    throw jsi::JSError(runtime, "1 argument is expected for `process`");
+                    throw jsi::JSError(rt, "1 argument is expected for `process`");
                 }
-                std::shared_ptr<SKRNNativeVideo::SKNativeFrameWrapper> obj = arguments[0].asObject(runtime).asHostObject<SKRNNativeVideo::SKNativeFrameWrapper>(runtime);
+                if(!arguments[0].isObject()) {
+                    throw jsi::JSError(rt, "Argument to `process` should be a frame");
+                }
+                std::shared_ptr<SKRNNativeVideo::SKNativeFrameWrapper> obj = arguments[0].asObject(rt).asHostObject<SKRNNativeVideo::SKNativeFrameWrapper>(rt);
                 std::vector<std::shared_ptr<SKRNMLKitMLKFace>> results = process(obj);
-                jsi::Array ret = jsi::Array(runtime, results.size());
+                jsi::Array ret = jsi::Array(rt, results.size());
                 for(int i = 0; i < results.size(); i++) {
-                    ret.setValueAtIndex(runtime, i, jsi::Object::createFromHostObject(runtime, results[i]));
+                    ret.setValueAtIndex(rt, i, jsi::Object::createFromHostObject(rt, results[i]));
                 }
                 return ret;
             });
@@ -41,7 +47,7 @@ facebook::jsi::Value SKRNMLKitFaceDetector::get(facebook::jsi::Runtime &runtime,
 }
 
 static std::vector<std::string> nativeSKRNMLKitFaceDetectorKeys = {
-#ifdef HAS_SKRN_NATIVE_VIDEO
+#if HAS_SKRN_NATIVE_VIDEO
     "process"
 #endif
 };
