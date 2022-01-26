@@ -25,6 +25,8 @@ facebook::jsi::Value SKRNMLKitFaceDetector::get(facebook::jsi::Runtime &runtime,
                 // Right now in Android, it seems that using the runtime in any capacity (even when constructing functions) causes
                 // the app to crash. I still have no idea why. It's like... construction of this lambda function crashes as soon as
                 // any line references the runtime (either as `rt` (inner scope) or `runtime` (outer scope))
+                // But if I simply construct an empty jsi::Array in here then it's fine; no errors with the runtime.
+                // So maybe it's accessing the C++ class when constructing the function that's causing the error??
                 if(count < 1) {
                     throw jsi::JSError(rt, "1 argument is expected for `process`");
                 }
@@ -37,6 +39,7 @@ facebook::jsi::Value SKRNMLKitFaceDetector::get(facebook::jsi::Runtime &runtime,
                 for(int i = 0; i < results.size(); i++) {
                     ret.setValueAtIndex(rt, i, jsi::Object::createFromHostObject(rt, results[i]));
                 }
+//                jsi::Array ret = jsi::Array(rt, 0); // If I just return this in android and comment out the actual processing stuff then no crashes
                 return ret;
             });
         } break;

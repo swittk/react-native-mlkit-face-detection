@@ -50,6 +50,7 @@ export default function App() {
     // const results = faceDetector.current.process(frame);
     // console.log('results are', results.map((v) => v.landmarks()));
     const results = faceDetector.current.process(frame);
+    console.log('results', results);
     console.log('result landmarks', results[0].landmarks);
   }
 

@@ -1,5 +1,7 @@
 package com.reactnativemlkitfacedetection;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.JavaScriptContextHolder;
@@ -30,7 +32,9 @@ public class MlkitFaceDetectionModule extends ReactContextBaseJavaModule {
     try {
       // Used to load the 'native-lib' library on application startup.
       System.loadLibrary("SKRNMLKitFaceDetection");
+      Log.d("SKRNMLKitFace", "Loaded SKRNMLKitFaceDetection SO");
     } catch (Exception ignored) {
+      Log.d("SKRNMLKitFace", "Failed to load SKRNMLKitFaceDetection");
     }
   }
 
@@ -71,7 +75,7 @@ public class MlkitFaceDetectionModule extends ReactContextBaseJavaModule {
   // "called on the appropriate method when a life cycle event occurs.
   @Override
   public void initialize() {
-//    loadClassIfNeeded();
+    loadClassIfNeeded();
     ReactApplicationContext context = this.reactContext;
     JavaScriptContextHolder jsContext = context.getJavaScriptContextHolder();
     MlkitFaceDetectionModule.initialize(jsContext.get());
@@ -84,5 +88,20 @@ public class MlkitFaceDetectionModule extends ReactContextBaseJavaModule {
   public void onCatalystInstanceDestroy() {
     MlkitFaceDetectionModule.cleanup(this.reactContext.getJavaScriptContextHolder().get());
     // FlexibleHttpModule.cleanup(this.getReactApplicationContext());
+  }
+
+  void loadClassIfNeeded() {
+    try {
+      Class thing = SKRNMLKitAndroidFaceDetectionJava.class;
+      thing.getClassLoader().loadClass("com.reactnativemlkitfacedetection.SKRNMLKitAndroidFaceDetectionJava");
+      Log.d("SKRNMLKitFace", "Supposedly loaded class");
+      this.reactContext.getClassLoader().loadClass("com.reactnativemlkitfacedetection.SKRNMLKitAndroidFaceDetectionJava");
+      Log.d("SKRNMLKitFace", "ReactContext loaded class");
+      Class<?> driverClass = Thread.currentThread().getContextClassLoader().loadClass("com.reactnativemlkitfacedetection.SKRNMLKitAndroidFaceDetectionJava");
+//      Class<?> skNativeVideoWrapperJavaSide = ClassLoader.getSystemClassLoader().loadClass("com.reactnativenativevideo.SKNativeVideoWrapperJavaSide");
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+      Log.d("SKRNMLKitFace", "Failed to load SKRNMLKitAndroidFaceDetectionJava");
+    }
   }
 }

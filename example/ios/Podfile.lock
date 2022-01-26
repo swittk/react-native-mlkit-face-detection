@@ -326,10 +326,10 @@ PODS:
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
   - React-jsinspector (0.64.3)
-  - react-native-mlkit-face-detection (0.1.2):
+  - react-native-mlkit-face-detection (0.1.4):
     - GoogleMLKit/FaceDetection (= 2.5.0)
     - React-Core
-  - react-native-native-video (0.2.15):
+  - react-native-native-video (0.2.23):
     - React-Core
   - React-perflogger (0.64.3)
   - React-RCTActionSheet (0.64.3):
@@ -423,10 +423,6 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - VisionCamera (2.12.0):
-    - React
-    - React-callinvoker
-    - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -491,7 +487,6 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
-  - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -599,8 +594,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
-  VisionCamera:
-    :path: "../node_modules/react-native-vision-camera"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -652,8 +645,8 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
-  react-native-mlkit-face-detection: 7cfd0384e71ab852b06e6438c4b5d5fd897f5762
-  react-native-native-video: 1a9622eaf1eb7bd30debf2adad18b9705838ea06
+  react-native-mlkit-face-detection: 1e382462ce94bbe5cf84e2388222a823a6074dc4
+  react-native-native-video: 2e1621c195e11949cef4ad4eef29f70107cdb602
   React-perflogger: cc76a4254d19640f1d8ad1c66fdee800414b805c
   React-RCTActionSheet: 7448f049318d8d7e8a9a1ebb742ada721757eea8
   React-RCTAnimation: fb9b3fa1a4a9f5e6ab01b3368693ce69860ba76a
@@ -667,7 +660,6 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 493d9abb8b23c3f84e19ae221eeba92cadcb70dc
   ReactCommon: 8fea6422328e2fc093e25c9fac67adbcf0f04fb4
   RNReanimated: 7f143675d94978c3555345d5bfa8ed6ae800c5d3
-  VisionCamera: 2acf8cebb8924b6105ad6448af3a64b7b9ee816e
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
