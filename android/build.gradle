@@ -128,7 +128,7 @@ dependencies {
       implementation "androidx.camera:camera-core:1.1.0-alpha12"
       implementation "androidx.camera:camera-camera2:1.1.0-alpha12"
     }
-//    if(hasNativeVideo) {
-//      implementation project(":react-native-native-video")
-//    }
+   if(hasNativeVideo) {
+     implementation project(":react-native-native-video")
+   }
 }
